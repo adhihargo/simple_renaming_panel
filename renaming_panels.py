@@ -14,7 +14,8 @@ def drawSimpleUi(self, context):
     split.label(text="Target")
     split.prop(scene, "renaming_object_types", text="")
     if str(scene.renaming_object_types) == 'OBJECT':
-        layout.prop(scene, "renaming_object_types_specified", expand=True)
+        row = layout.grid_flow(columns=0, align=True)
+        row.prop(scene, "renaming_object_types_specified", expand=True)
     # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
     #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
 
@@ -101,7 +102,8 @@ def drawAdvancedUI(self, context, advancedMode):
     split.prop(scene, "renaming_object_types", text="")
 
     if str(scene.renaming_object_types) == 'OBJECT':
-        layout.prop(scene, "renaming_object_types_specified", expand=True)
+        row = layout.grid_flow(columns=0, align=True)
+        row.prop(scene, "renaming_object_types_specified", expand=True)
     # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
     #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
 
