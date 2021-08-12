@@ -39,34 +39,6 @@ def drawRenameSimpleUi(self, context):
     row.operator("renaming.search_replace", icon="FILE_REFRESH")
     layout.separator()
 
-    ###############################################
-    layout.label(text="Other")
-
-    ###############################################
-    row = layout.row(align=True)
-    row.prop(scene, "renaming_prefix", text="")
-    row.operator("renaming.add_prefix", icon="REW")
-
-    ###############################################
-    row = layout.row(align=True)
-    row.prop(scene, "renaming_suffix", text="")
-    row.operator("renaming.add_suffix", icon="FF")
-
-    ###############################################
-    row = layout.row(align=True)
-    # row.prop(scene, "renaming_digits_numerate", text="")
-    row.operator("renaming.numerate", icon="LINENUMBERS_ON")
-
-    ###############################################
-    row = layout.row(align=True)
-    row.prop(scene, "renaming_cut_size", text="")
-    row.operator("renaming.cut_string", icon="X")
-
-    if str(scene.renaming_object_types) in ('DATA', 'OBJECT', 'ADDOBJECTS'):
-        row = layout.row(align=True)
-        row.prop(scene, "renaming_sufpre_data_02", text="")
-        row.operator("renaming.dataname_from_obj", icon="MOD_DATA_TRANSFER")
-
 
 def drawRenameAdvancedUI(self, context):
     layout = self.layout
@@ -124,6 +96,36 @@ def drawRenameAdvancedUI(self, context):
     ###############################################
     # layout.label(text="Other")
     # layout.separator()
+
+def drawAffixSimpleUi(self, context):
+    layout = self.layout
+    scene = context.scene
+
+    row = layout.row(align=True)
+    row.prop(scene, "renaming_prefix", text="")
+    row.operator("renaming.add_prefix", icon="REW")
+
+    row = layout.row(align=True)
+    row.prop(scene, "renaming_suffix", text="")
+    row.operator("renaming.add_suffix", icon="FF")
+
+    row = layout.row(align=True)
+    # row.prop(scene, "renaming_digits_numerate", text="")
+    row.operator("renaming.numerate", icon="LINENUMBERS_ON")
+
+    row = layout.row(align=True)
+    row.prop(scene, "renaming_cut_size", text="")
+    row.operator("renaming.cut_string", icon="X")
+
+    if str(scene.renaming_object_types) in ('DATA', 'OBJECT', 'ADDOBJECTS'):
+        row = layout.row(align=True)
+        row.prop(scene, "renaming_sufpre_data_02", text="")
+        row.operator("renaming.dataname_from_obj", icon="MOD_DATA_TRANSFER")
+
+
+def drawAffixAdvancedUi(self, context):
+    layout = self.layout
+    scene = context.scene
 
     layout.label(text="Prefix")
     #### REFIX SUFFIX
@@ -312,6 +314,22 @@ class VIEW3D_PT_tools_sub_rename(bpy.types.Panel):
             drawRenameAdvancedUI(self, context)
         else:
             drawRenameSimpleUi(self, context)
+
+
+class VIEW3D_PT_tools_sub_affix(bpy.types.Panel):
+    bl_label = "Affix"
+    bl_parent_id = "VIEW3D_PT_tools_renaming_panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    def draw(self, context):
+        prefs = context.preferences.addons[__package__].preferences
+        advancedMode = prefs.renamingPanel_advancedMode
+        if advancedMode == True:
+            drawAffixAdvancedUi(self, context)
+        else:
+            drawAffixSimpleUi(self, context)
 
 
 class VIEW3D_OT_SimpleOperator(bpy.types.Operator):
