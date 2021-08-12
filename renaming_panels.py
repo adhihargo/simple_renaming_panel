@@ -187,11 +187,11 @@ class VIEW3D_PT_tools_renaming_panel(bpy.types.Panel):
         layout.prop(prefs, "renamingPanel_advancedMode")
         # layout.use_property_split = True  # Activate single-column layout
 
-        row = layout.grid_flow(columns=0, align=True)
+        row = layout.grid_flow(row_major=True, columns=0, align=True)
         row.prop(scene, "renaming_object_types", expand=True, icon_only=True)
 
         if str(scene.renaming_object_types) == 'OBJECT':
-            row = layout.grid_flow(columns=0, align=True)
+            row = layout.grid_flow(row_major=True, columns=0, align=True)
             row.prop(scene, "renaming_object_types_specified", expand=True)
         # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
         #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
