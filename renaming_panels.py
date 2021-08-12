@@ -6,7 +6,7 @@ from bpy.types import Operator, Menu
 from .renaming_proFeatures import RENAMING_MT_variableMenu
 
 
-def drawSimpleUi(self, context):
+def drawRenameSimpleUi(self, context):
     layout = self.layout
     scene = context.scene
 
@@ -15,11 +15,7 @@ def drawSimpleUi(self, context):
     row.prop(scene, "renaming_newName", text="")
     row.operator("renaming.name_replace", icon="FORWARD")
 
-    ###############################################
-    row = layout.row(align=True)
     layout.label(text="Search and Replace")
-
-    row = layout.row(align=True)
     if scene.renaming_useRegex == False:
         row = layout.row(align=True)
         row.prop(scene, "renaming_useRegex")
@@ -72,97 +68,90 @@ def drawSimpleUi(self, context):
         row.operator("renaming.dataname_from_obj", icon="MOD_DATA_TRANSFER")
 
 
-def drawAdvancedUI(self, context, advancedMode):
+def drawRenameAdvancedUI(self, context):
     layout = self.layout
     scene = context.scene
 
+    ###### NEW NAME #######
+    layout.prop(scene, "renaming_usenumerate")
+    row = layout.row(align=True)
+    split = layout.split(factor=0.6, align=True)
+    split.prop(scene, "renaming_newName", text='')
+    split = split.split(factor=0.75, align=True)
+    split.prop(scene, "renaming_numerate", text='')
+    button = split.operator("object.renaming_set_variable", text="@").inputBox = "newName"
 
+    row = layout.row()
+    row.scale_y = 1.5
+    row.operator("renaming.name_replace", icon="FORWARD")
+    layout.separator()
+
+    ###### SEARCH REPLACE #######
 
     layout.separator()
 
-    layout.label(text="Rename")
-    if True:
-        ###### NEW NAME #######
-        layout.prop(scene, "renaming_usenumerate")
+    layout.label(text="Search and Replace")
+    if scene.renaming_useRegex == False:
         row = layout.row(align=True)
-        split = layout.split(factor=0.6, align=True)
-        split.prop(scene, "renaming_newName", text='')
-        split = split.split(factor=0.75, align=True)
-        split.prop(scene, "renaming_numerate", text='')
-        button = split.operator("object.renaming_set_variable", text="@").inputBox = "newName"
+        row.prop(scene, "renaming_useRegex")
+        row.prop(scene, "renaming_matchcase")
+    else:
+        layout.prop(scene, "renaming_useRegex")
 
-        row = layout.row()
-        row.scale_y = 1.5
-        row.operator("renaming.name_replace", icon="FORWARD")
-        layout.separator()
+    row = layout.row(align=True)
+    split = row.split(factor=0.9, align=True)
+    split.prop(scene, "renaming_search", text='Search')
+    button = split.operator("object.renaming_set_variable", text="@").inputBox = "search"
+    row = layout.row(align=True)
+    split = row.split(factor=0.9, align=True)
+    split.prop(scene, "renaming_replace", text='Replace')
+    button = split.operator("object.renaming_set_variable", text="@").inputBox = "replace"
 
-        ###### SEARCH REPLACE #######
-
-        layout.separator()
-
-        layout.label(text="Search and Replace")
-        if advancedMode == True:
-            if scene.renaming_useRegex == False:
-                row = layout.row(align=True)
-                row.prop(scene, "renaming_useRegex")
-                row.prop(scene, "renaming_matchcase")
-            else:
-                layout.prop(scene, "renaming_useRegex")
-
-            row = layout.row(align=True)
-            split = row.split(factor=0.9, align=True)
-            split.prop(scene, "renaming_search", text='Search')
-            button = split.operator("object.renaming_set_variable", text="@").inputBox = "search"
-            row = layout.row(align=True)
-            split = row.split(factor=0.9, align=True)
-            split.prop(scene, "renaming_replace", text='Replace')
-            button = split.operator("object.renaming_set_variable", text="@").inputBox = "replace"
-
-        if scene.renaming_object_types == 'BONE':
-            if context.mode == 'POSE':
-                row = layout.row(align=True)
-                row.operator("renaming.search_select", icon="RESTRICT_SELECT_OFF")
-
-        elif scene.renaming_object_types == 'OBJECT':
+    if scene.renaming_object_types == 'BONE':
+        if context.mode == 'POSE':
             row = layout.row(align=True)
             row.operator("renaming.search_select", icon="RESTRICT_SELECT_OFF")
 
+    elif scene.renaming_object_types == 'OBJECT':
         row = layout.row(align=True)
-        row.scale_y = 1.5
-        row.operator("renaming.search_replace", icon="FILE_REFRESH")
-        layout.separator()
+        row.operator("renaming.search_select", icon="RESTRICT_SELECT_OFF")
 
-        ###############################################
-        # layout.label(text="Other")
-        # layout.separator()
+    row = layout.row(align=True)
+    row.scale_y = 1.5
+    row.operator("renaming.search_replace", icon="FILE_REFRESH")
+    layout.separator()
 
-        layout.label(text="Prefix")
-        #### REFIX SUFFIX
-        row = layout.row(align=True)
-        split = row.split(factor=0.9, align=True)
-        split.prop(scene, "renaming_prefix", text='')
-        button = split.operator("object.renaming_set_variable", text="@").inputBox = "prefix"
-        layout.operator("renaming.add_prefix", icon="REW")
+    ###############################################
+    # layout.label(text="Other")
+    # layout.separator()
 
-        layout.label(text="Suffix ")
+    layout.label(text="Prefix")
+    #### REFIX SUFFIX
+    row = layout.row(align=True)
+    split = row.split(factor=0.9, align=True)
+    split.prop(scene, "renaming_prefix", text='')
+    button = split.operator("object.renaming_set_variable", text="@").inputBox = "prefix"
+    layout.operator("renaming.add_prefix", icon="REW")
 
-        row = layout.row(align=True)
-        split = row.split(factor=0.9, align=True)
-        split.prop(scene, "renaming_suffix", text='')
-        button = split.operator("object.renaming_set_variable", text="@").inputBox = "suffix"
-        layout.operator("renaming.add_suffix", icon="FF")
+    layout.label(text="Suffix ")
 
-        layout.separator()
-        layout.label(text="Other")
-        ###############################################
-        row = layout.row(align=True)
-        # row.prop(scene, "renaming_digits_numerate", text="")
-        row.operator("renaming.numerate", icon="LINENUMBERS_ON")
+    row = layout.row(align=True)
+    split = row.split(factor=0.9, align=True)
+    split.prop(scene, "renaming_suffix", text='')
+    button = split.operator("object.renaming_set_variable", text="@").inputBox = "suffix"
+    layout.operator("renaming.add_suffix", icon="FF")
 
-        ###############################################
-        row = layout.row(align=True)
-        row.prop(scene, "renaming_cut_size", text="")
-        row.operator("renaming.cut_string", icon="X")
+    layout.separator()
+    layout.label(text="Other")
+    ###############################################
+    row = layout.row(align=True)
+    # row.prop(scene, "renaming_digits_numerate", text="")
+    row.operator("renaming.numerate", icon="LINENUMBERS_ON")
+
+    ###############################################
+    row = layout.row(align=True)
+    row.prop(scene, "renaming_cut_size", text="")
+    row.operator("renaming.cut_string", icon="X")
 
     if str(scene.renaming_object_types) in ('DATA', 'OBJECT', 'ADDOBJECTS'):
         layout.separator()
@@ -308,6 +297,21 @@ class VIEW3D_PT_tools_type_suffix(bpy.types.Panel):
 
         row = col.row()
         row.operator('renaming.add_sufpre_by_type', text="All").option = 'all'
+
+
+class VIEW3D_PT_tools_sub_rename(bpy.types.Panel):
+    bl_label = "Rename / Replace"
+    bl_parent_id = "VIEW3D_PT_tools_renaming_panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        prefs = context.preferences.addons[__package__].preferences
+        advancedMode = prefs.renamingPanel_advancedMode
+        if advancedMode == True:
+            drawRenameAdvancedUI(self, context)
+        else:
+            drawRenameSimpleUi(self, context)
 
 
 class VIEW3D_OT_SimpleOperator(bpy.types.Operator):

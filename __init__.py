@@ -87,6 +87,7 @@ from .renaming_utilities import RENAMING_MESSAGES, WarningError_MESSAGES, INFO_M
 # all classes that are supposed to be registered in the blender core.
 classes = (
     renaming_panels.VIEW3D_PT_tools_renaming_panel,
+    renaming_panels.VIEW3D_PT_tools_sub_rename,
     renaming_panels.VIEW3D_PT_tools_type_suffix,
     renaming_panels.VIEW3D_OT_SimpleOperator,
     renaming_panels.VIEW3D_OT_RenamingPopupOperator,
