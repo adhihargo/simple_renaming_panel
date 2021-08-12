@@ -10,27 +10,6 @@ def drawSimpleUi(self, context):
     layout = self.layout
     scene = context.scene
 
-    split = layout.split(align=True, factor=0.3)
-    split.label(text="Target")
-    split.prop(scene, "renaming_object_types", text="")
-    if str(scene.renaming_object_types) == 'OBJECT':
-        row = layout.grid_flow(columns=0, align=True)
-        row.prop(scene, "renaming_object_types_specified", expand=True)
-    # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
-    #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
-
-    # layout.use_property_split = False  # Activate single-column layout
-
-    if str(scene.renaming_object_types) in ('MATERIAL', 'DATA'):
-        layout.prop(scene, "renaming_only_selection", text="Only Of Selected Objects")
-    elif str(scene.renaming_object_types) in ('OBJECT', 'ADDOBJECTS', 'BONE'):
-        layout.prop(scene, "renaming_only_selection", text="Only Selected")
-
-    layout.separator()
-
-    ###############################################
-    layout.label(text="Rename")
-
     row = layout.row(align=True)
     # row.scale_y = 1.5
     row.prop(scene, "renaming_newName", text="")
@@ -97,22 +76,7 @@ def drawAdvancedUI(self, context, advancedMode):
     layout = self.layout
     scene = context.scene
 
-    split = layout.split(align=True, factor=0.3)
-    split.label(text="Target")
-    split.prop(scene, "renaming_object_types", text="")
 
-    if str(scene.renaming_object_types) == 'OBJECT':
-        row = layout.grid_flow(columns=0, align=True)
-        row.prop(scene, "renaming_object_types_specified", expand=True)
-    # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
-    #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
-
-    # layout.use_property_split = True  # Activate single-column layout
-
-    if str(scene.renaming_object_types) in ('MATERIAL', 'DATA'):
-        layout.prop(scene, "renaming_only_selection", text="Only Of Selected Objects")
-    elif str(scene.renaming_object_types) in ('OBJECT', 'ADDOBJECTS', 'BONE'):
-        layout.prop(scene, "renaming_only_selection", text="Only Selected")
 
     layout.separator()
 
@@ -228,17 +192,25 @@ class VIEW3D_PT_tools_renaming_panel(bpy.types.Panel):
     bl_category = "Rename"
 
     def draw(self, context):
-
+        scene = context.scene
         prefs = context.preferences.addons[__package__].preferences
-        advancedMode = prefs.renamingPanel_advancedMode
-
         layout = self.layout
         layout.prop(prefs, "renamingPanel_advancedMode")
+        # layout.use_property_split = True  # Activate single-column layout
 
-        if advancedMode == True:
-            drawAdvancedUI(self, context, advancedMode)
-        else:
-            drawSimpleUi(self, context)
+        row = layout.grid_flow(columns=0, align=True)
+        row.prop(scene, "renaming_object_types", expand=True, icon_only=True)
+
+        if str(scene.renaming_object_types) == 'OBJECT':
+            row = layout.grid_flow(columns=0, align=True)
+            row.prop(scene, "renaming_object_types_specified", expand=True)
+        # elif str(scene.renaming_object_types) == 'ADDOBJECTS':
+        #    layout.prop(scene, "renaming_object_addtypes_specified", expand=True)
+
+        if str(scene.renaming_object_types) in ('MATERIAL', 'DATA'):
+            layout.prop(scene, "renaming_only_selection", text="Only Of Selected Objects")
+        elif str(scene.renaming_object_types) in ('OBJECT', 'ADDOBJECTS', 'BONE'):
+            layout.prop(scene, "renaming_only_selection", text="Only Selected")
 
 
 # addon Panel

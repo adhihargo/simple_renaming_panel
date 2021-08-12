@@ -171,16 +171,16 @@ prefixSuffixItems = [('PRE', "Prefix", "prefix"),
                      ('SUF', "Suffix", "suffix")
                      ]
 
-renamingEntitiesItems = [('OBJECT', "Object", "Scene Objects"),
-                         # ('ADDOBJECTS', "Objects (additional)","Scene Objects"),
-                         ('MATERIAL', "Material", "Materials"),
-                         ('IMAGE', "Image Textures", "Image Textures"),
-                         ('DATA', "Data", "Object Data"),
-                         ('BONE', "Bone", "Bones"),
-                         ('COLLECTION', "Collection", "Rename collections"),
-                         ('ACTIONS', "Actions", "Rename Actions"),
-                         ('SHAPEKEYS', "Shape Keys", "Rename shape keys")
-                         # ('VERTEXGROUPS',"Vertex Groups", "Rename vertex groups")
+renamingEntitiesItems = [('OBJECT', "Object", "Scene Objects", "OBJECT_DATA", 1),
+                         # ('ADDOBJECTS', "Objects (additional)","Scene Objects", "OBJECT_HIDDEN", 2),
+                         ('MATERIAL', "Material", "Materials", "MATERIAL_DATA", 3),
+                         ('IMAGE', "Image Textures", "Image Textures", "TEXTURE_DATA", 4),
+                         ('DATA', "Data", "Object Data", "MESH_DATA", 5),
+                         ('BONE', "Bone", "Bones", "BONE_DATA", 6),
+                         ('COLLECTION', "Collection", "Rename collections", "OUTLINER_COLLECTION", 7),
+                         ('ACTIONS', "Actions", "Rename Actions", "ACTION", 8),
+                         ('SHAPEKEYS', "Shape Keys", "Rename shape keys", "SHAPEKEY_DATA", 9)
+                         # ('VERTEXGROUPS',"Vertex Groups", "Rename vertex groups", "GROUP_VERTEX", 10)
                          # ('UVMaps')
                          # ('FACEMAPS')
                          # ('PARTICLESYSTEM')
